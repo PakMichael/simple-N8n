@@ -1,0 +1,13 @@
+__pychache__
+node_modules
+static
+public
+.vscode
+.idea
+tmp
+data
+
+*.sqlite3
+*.pyc
+.venv
+.env.dev

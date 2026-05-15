@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  web:
+    build: .
+    working_dir: /simple_n8n/
+    command:
+      - /bin/bash
+      - -c
+      - |
+        gunicorn public_python.main:app -w 1 -k uvicorn.workers.UvicornWorker -b 0.0.0.0:8000
+    ports:
+      - "8000:8000"
+    volumes:
+      - .:/simple_n8n
+    environment:
+      - PYTHONPATH=public_python
+      
+      - DB_NAME=${DB_NAME}
+      - DB_USER=${DB_USER}
+      - DB_PASSWORD=${DB_PASSWORD}
+      - DB_HOST=${DB_HOST}
+      - DB_PORT=${DB_PORT}
