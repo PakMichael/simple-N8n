@@ -15,3 +15,4 @@ class Task(Base):
     )
     name: Mapped[str] = mapped_column(String)
     description: Mapped[str] = mapped_column(String)
+    type: Mapped[str] = mapped_column(String)
