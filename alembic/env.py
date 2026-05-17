@@ -7,7 +7,6 @@ from sqlalchemy import pool
 from alembic import context
 from public_python.task.models import *
 from public_python.flow.models import *
-from public_python.condition.models import *
 from public_python.workflow.models import *
 
 # this is the Alembic Config object, which provides
