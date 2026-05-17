@@ -17,6 +17,8 @@ anyio==4.13.0
     #   httpx
     #   starlette
     #   watchfiles
+asyncpg==0.31.0
+    # via -r requirements.in
 certifi==2026.4.22
     # via
     #   httpcore
@@ -106,6 +108,8 @@ python-multipart==0.0.28
     # via fastapi
 pyyaml==6.0.3
     # via uvicorn
+redis==7.4.0
+    # via -r requirements.in
 rich==15.0.0
     # via
     #   rich-toolkit
