@@ -1,6 +1,6 @@
 import uuid as _uuid
 
-from sqlalchemy import ForeignKey, Boolean, UniqueConstraint, String
+from sqlalchemy import ForeignKey, Boolean, UniqueConstraint, String, Index
 from sqlalchemy.dialects.postgresql import UUID
 from sqlalchemy.orm import Mapped, mapped_column
 
@@ -25,6 +25,16 @@ class FlowTask(Base):
         ForeignKey("task.uuid", ondelete="CASCADE"),
         unique=True,
     )
+
+    __table_args__ = (
+        Index(
+            "only_one_start_task_per_flow_allowed",
+            "flow_uuid",
+            unique=True,
+            postgresql_where=is_start_task.is_(True),
+        ),
+    )
+
 
 class Condition(Base):
     __tablename__ = "condition_task"
@@ -56,6 +66,7 @@ class Condition(Base):
     )
 
     __table_args__ = (
-        UniqueConstraint("source_task_uuid", "target_task_success", "target_task_failure"),
+        UniqueConstraint(
+            "source_task_uuid", "target_task_success", "target_task_failure"
+        ),
     )
-
