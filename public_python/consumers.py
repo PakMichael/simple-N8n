@@ -51,27 +51,30 @@ async def process_task(task_uuid: uuid.UUID):
 
         result = await session.execute(stmt)
 
-        db_conditions = result.scalars().all()
+        db_condition = result.scalars().first()
 
-        if not db_conditions:
-            print("Flow completed")
+        if not db_condition:
+            print("Flow completed: no conditions found")
             return
 
-        for db_condition in db_conditions:
-            next_task_uuid = db_condition.target_task_success
+        next_task_uuid = db_condition.target_task_success
 
-            if task_status == 'failed':
-                next_task_uuid = db_condition.target_task_failure
+        if task_status == 'failed':
+            next_task_uuid = db_condition.target_task_failure
 
-            await async_redis_client.publish(
-                MAIN_LOOP_CHANNEL,
-                json.dumps(
-                    {
-                        "type": "run_task",
-                        "task_uuid": str(next_task_uuid),
-                    }
-                ),
-            )
+        if not next_task_uuid:
+            print("Flow completed: No 'target_task_failure' provided")
+            return
+
+        await async_redis_client.publish(
+            MAIN_LOOP_CHANNEL,
+            json.dumps(
+                {
+                    "type": "run_task",
+                    "task_uuid": str(next_task_uuid),
+                }
+            ),
+        )
 
 
 async def main_loop_consumer():
