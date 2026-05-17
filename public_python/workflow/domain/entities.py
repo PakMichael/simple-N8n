@@ -2,6 +2,8 @@ import uuid
 
 from pydantic import BaseModel
 
+from public_python.task.models import TaskType
+
 
 class FlowCreate(BaseModel):
     name: str
@@ -10,6 +12,7 @@ class FlowCreate(BaseModel):
 class CreateFlowTask(BaseModel):
     name: str
     description: str
+    type: TaskType
     is_start_task: bool = False
     flow_uuid: uuid.UUID
 

@@ -36,7 +36,7 @@ async def create_flow(flow: FlowCreate, session: AsyncSessionDep):
 @workflow_router.post("/task/")
 async def create_task(task: CreateFlowTask, session: AsyncSessionDep):
     async with session.begin():
-        db_task = Task(name=task.name, description=task.description)
+        db_task = Task(name=task.name, description=task.description, type=task.type)
 
         session.add(db_task)
         await session.flush()
