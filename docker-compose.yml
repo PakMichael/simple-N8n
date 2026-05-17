@@ -1,6 +1,8 @@
 version: "3"
 
 services:
+  redis:
+    image: redis:alpine
   web:
     build: .
     working_dir: /simple_n8n/
